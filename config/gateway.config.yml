@@ -1,0 +1,36 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  users:
+    paths: '/users'
+  employees:
+    paths: '/employees'
+serviceEndpoints:
+  usersSE:
+    url: 'https://api.github.com'
+  employeesSE:
+    url: 'https://dummy.restapiexample.com/api/v1'
+policies:
+  - proxy
+pipelines:
+  userspipe:
+    apiEndpoints:
+      - users
+    policies:
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: usersSE 
+              changeOrigin: true
+  employeesspipe:
+    apiEndpoints:
+      - employees
+    policies:
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: employeesSE 
+              changeOrigin: true
